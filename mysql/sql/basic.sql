@@ -11,6 +11,16 @@ ENGINE = InnoDB
 
 -- 전체 컬럼 조회
 SELECT * FROM member2;
+ALTER TABLE member2 AUTO_INCREMENT = 2;
+INSERT INTO member2
+VALUES (
+	
+	"tant"
+    ,"Tang"
+    ,1
+    ,30
+    ,54137511
+    );
 
 -- 컬럼 추가
 ALTER TABLE member2 ADD nickname varchar(45);
@@ -38,3 +48,26 @@ UPDATE member2 SET
     WHERE seq = 1;
 	
 SELECT * FROM member2;
+
+SELECT * FROM coca.member2;
+-- WHERE
+	SELECT*FROM Movie
+    WHERE 1=1
+    -- AND name like 'pe%'
+	-- AND name like '%ang'
+    AND mCountry like '%국'
+    ;
+    
+    SELECT*FROM member2
+    WHERE 1=1
+    -- AND gender=0
+    -- AND gender>0
+    -- AND gender<0
+    AND gender between 0 and 1
+    ;
+    
+    SELECT*FROM Movie
+    WHERE 1=1
+    -- AND mNameEn is NULL
+    AND mNameEn=''
+    -- AND mNameEn = null
