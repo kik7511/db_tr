@@ -70,4 +70,4 @@ SELECT * FROM coca.member2;
     WHERE 1=1
     -- AND mNameEn is NULL
     AND mNameEn=''
-    -- AND mNameEn = null
+    -- AND mNameEn = null(이건 안됨)

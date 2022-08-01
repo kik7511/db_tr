@@ -27,5 +27,5 @@ UPDATE test SET
 	email="kik7511@naver.com"
     WHERE seq=1;
 SELECT*FROM test;  
-SELECT id FROM test IF EXISTS;
+
 
