@@ -31,11 +31,14 @@ on b.ccgSeq = a.ccgSeq
 
 -- 회원가입 목록
 SELECT*FROM coca.infrMember WHERE ifMmId="" OR ifMmNickname="";
-select*		
+select 
+*	
 from infrMember a
 -- left join CC on CC.ccgSeq = CCG.ccgSeq
-inner join CC b 
-on b.ccgSeq = a.ifMmGender and a.ifMmEmailAddress and a.ifMmTel and a.ifMmMarketing 
+inner join CC as p1 
+on a.ifMmGender = p1.ccSeq
+inner join CC as p2 
+on a.ifMmEmailAddress = p2.ccSeq
 ;
 
 

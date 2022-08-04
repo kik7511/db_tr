@@ -1,5 +1,5 @@
 SELECT * FROM coca.seat;
 DELETE FROM purchase WHERE seq = 7;
 UPDATE purchase SET
-	name = "peter"
+	price = 45000
     WHERE seq = 1;
