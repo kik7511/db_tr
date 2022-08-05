@@ -57,12 +57,22 @@ ON a.scScreenType=c.ccSeq
 ;
 
 -- 날짜 목록
-SELECT*
+SELECT
+	a.dSeq
+    ,d.thName
+    ,c.mNameKor    
+    ,b.scNumber
+    ,e.ccCodeName
+    ,a.dDateTime            
 FROM coca.date a
 INNER JOIN screen b
 ON a.screen_scSeq = b.scSeq
 INNER JOIN Movie c
 ON a.Movie_mSeq = c.mSeq
+INNER JOIN Theater d
+ON b.Theater_thSeq = d.thSeq
+INNER JOIN CC e
+ON e.ccSeq = b.scScreenType
 ;
 
 -- 좌석 목록
