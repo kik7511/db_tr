@@ -95,26 +95,32 @@ SELECT
 FROM Theater a
 Where 1=1
 	And a.thLocation = 30
-    And a.thName = "CGV 강남"
+   
 ;
 
 -- 날짜 시간 
 SELECT
  	a.dSeq as seq
+    ,c.mNameKor 
+    ,b.thLocation
     ,b.thName 
     ,d.scNumber
-    ,a.dDateTime
-    ,c.mNameKor    
+    ,a.dDateTime      
     ,d.scScreenType    
     ,d.scTotalSeat    
 FROM date a
 INNER JOIN Movie c
-ON a.Movie_mSeq=c.mSeq
+	ON a.Movie_mSeq=c.mSeq
 INNER JOIN screen d
-ON a.screen_scSeq=d.scSeq
+	ON a.screen_scSeq=d.scSeq
 INNER JOIN Theater b
-ON b.thSeq = d.Theater_thSeq
-WHERE a.dSeq = 3
+	ON b.thSeq = d.Theater_thSeq
+WHERE 1=1 
+	AND c.mNameKor = "미니언즈2"
+    AND b.thLocation = 30
+	AND b.thName like "%%"
+	AND d.scNumber = 2
+    AND a.dDateTime = '2022-08-01 09:30:00'    
 ;
 
 -- 좌석선택
@@ -130,13 +136,15 @@ SELECT
     ,a.stPrice
 FROM seat a
 INNER JOIN purchase b
-on a.purchase_seq = b.seq
+	on a.purchase_seq = b.seq
 INNER JOIN date c
-on b.date_dSeq = c.dSeq
+	on b.date_dSeq = c.dSeq
 INNER JOIN screen d
-on c.screen_scSeq = d.scSeq
+	on c.screen_scSeq = d.scSeq
 INNER JOIN Theater e
-on d.Theater_thSeq = e.thSeq
+	on d.Theater_thSeq = e.thSeq
+WHERE e.thName LIKE "%"
+	AND d.scNumber = 1
 ;
 
 -- 구매 목록
@@ -154,19 +162,19 @@ SELECT
     ,g.stPrice    
 FROM coca.purchase a
 INNER JOIN coca.infrMember b
-ON a.infrMember_ifMmSeq = b.ifMmSeq
+	ON a.infrMember_ifMmSeq = b.ifMmSeq
 INNER JOIN coca.date c
-ON a.date_dSeq = c.dSeq
+	ON a.date_dSeq = c.dSeq
 INNER JOIN coca.Movie d
-ON c.Movie_mSeq = d.mSeq
+	ON c.Movie_mSeq = d.mSeq
 INNER JOIN screen e
-on c.screen_scSeq = e.scSeq
+	on c.screen_scSeq = e.scSeq
 INNER JOIN Theater f
-on e.Theater_thSeq = f.thSeq
+	on e.Theater_thSeq = f.thSeq
 INNER JOIN seat g
-on g.purchase_seq = a.seq
+	on g.purchase_seq = a.seq
 WHERE 1=1
- and ifMmId = "kik7511"
+	and ifMmId = "kik7511"
 ;
  
 -- 회원 관리 
