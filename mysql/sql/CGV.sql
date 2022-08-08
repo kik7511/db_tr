@@ -100,94 +100,79 @@ Where 1=1
     And a.thName = "CGV 강남"
 ;
 
--- 날짜 시간
+-- 날짜 시간 
 SELECT
-	a.scSeq
-    , b.thName
-    , a.scRow
-    , a.scCol
-    , a.scTotalSeat
-    , c.ccCodename as screenType
-FROM screen a
-INNER JOIN Theater b
-ON a.Theater_thSeq=b.thSeq
-INNER JOIN CC c
-ON a.scScreenType=c.ccSeq
-;
-
--- 날짜 목록
-SELECT
-	a.dSeq
-    ,d.thName
+ 	a.dSeq as seq
+    ,b.thName 
+    ,d.scNumber
+    ,a.dDateTime
     ,c.mNameKor    
-    ,b.scNumber
-    ,e.ccCodeName
-    ,a.dDateTime            
-FROM coca.date a
-INNER JOIN screen b
-ON a.screen_scSeq = b.scSeq
+    ,d.scScreenType    
+    ,d.scTotalSeat    
+FROM date a
 INNER JOIN Movie c
-ON a.Movie_mSeq = c.mSeq
-INNER JOIN Theater d
-ON b.Theater_thSeq = d.thSeq
-INNER JOIN CC e
-ON e.ccSeq = b.scScreenType
+ON a.Movie_mSeq=c.mSeq
+INNER JOIN screen d
+ON a.screen_scSeq=d.scSeq
+INNER JOIN Theater b
+ON b.thSeq = d.Theater_thSeq
+-- WHERE thName ="CGV 강남"
 ;
 
--- 좌석 목록
-
-
+-- 좌석선택
+SELECT
+	a.stSeq
+    ,e.thName
+    ,d.scNumber
+    ,d.scRow
+    ,d.scCol
+    ,a.stY_alphabet
+    ,a.stX_num
+    ,a.stkind
+    ,a.stPrice
+FROM seat a
+INNER JOIN purchase b
+on a.purchase_seq = b.seq
+INNER JOIN date c
+on b.date_dSeq = c.dSeq
+INNER JOIN screen d
+on c.screen_scSeq = d.scSeq
+INNER JOIN Theater e
+on d.Theater_thSeq = e.thSeq
+;
 
 -- 구매 목록
 SELECT
 	a.seq
-	, b.ifMmName
-    , b.ifMmId
-    , e.ccCodeName
-    , b.ifMmPhone
-    , a.price
-    , d.ccCodeName
+    ,b.ifMmName
+    ,b.ifMmId
+    ,d.mNamekor
+    ,f.thName
+    ,c.dDateTime
+    ,e.scNumber    
+    ,g.stkind
+    ,g.stY_alphabet
+    ,g.stX_num    
+    ,g.stPrice    
 FROM coca.purchase a
 INNER JOIN coca.infrMember b
 ON a.infrMember_ifMmSeq = b.ifMmSeq
 INNER JOIN coca.date c
-ON a.date_dSeq = c.dSeq 
-INNER JOIN coca.CC d
-ON a.payment=d.ccSeq
-INNER JOIN coca.CC e
-ON b.ifMmTel=e.ccSeq
+ON a.date_dSeq = c.dSeq
+INNER JOIN coca.Movie d
+ON c.Movie_mSeq = d.mSeq
+INNER JOIN screen e
+on c.screen_scSeq = e.scSeq
+INNER JOIN Theater f
+on e.Theater_thSeq = f.thSeq
+INNER JOIN seat g
+on g.purchase_seq = a.seq
+WHERE 1=1
+ and ifMmId = "kik7511"
 ;
  
--- 회원가입 목록
-SELECT*FROM coca.infrMember WHERE ifMmId="" OR ifMmNickname="";
-select 
-	a.ifMmSeq
-    ,a.ifMmName
-    ,p1.ccCodeName as ifMmGender
-    ,a.ifMmDob
-    ,a.ifMmId
-    ,a.ifMmPassWord
-    ,p3.ccCodeName as ifMmTel
-    ,a.ifMmPhone
-    ,a.ifMmEmail
-    ,p2.ccCodeName as ifMmEmailAddress
-    ,p4.ccCodeName as ifMmMarketing
-    ,a.ifMmSingupDate
-    ,a.ifMmAddress
-    ,a.ifMmAddress_homenumber
-    ,a.ifMmAddress_detail
-    ,a.ifMmNickname        
-from coca.infrMember a
--- left join CC on CC.ccgSeq = CCG.ccgSeq
-inner join CC p1 
-on a.ifMmGender = p1.ccSeq
-inner join CC p2 
-on a.ifMmEmailAddress = p2.ccSeq
-inner join CC p3 
-on a.ifMmTEl = p3.ccSeq
-inner join CC p4 
-on a.ifMmMarketing = p4.ccSeq
-;
+-- 회원 관리 
+
 
 
 
