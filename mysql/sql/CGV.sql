@@ -25,8 +25,6 @@ WHERE 1=1
 SELECT
 	a.mNameKor    
 FROM coca.Movie a
-WHERE 1=1
-	AND a.mSeq = 1
 ;
 
 -- 무비 차트
@@ -34,8 +32,6 @@ SELECT
 	a.mNameKor
 	, a.mOpenDate
 FROM coca.Movie a
-WHERE 1=1
-	AND a.mSeq = 1
 ;
 
 -- 영화상세정보 목록
@@ -87,6 +83,8 @@ SELECT
     , a.mNameKor
     , a.mAgeLimit
 FROM coca.Movie a
+Where 1=1
+	and a.mSeq=2
 ;
 
 -- 극장 목록
@@ -116,7 +114,7 @@ INNER JOIN screen d
 ON a.screen_scSeq=d.scSeq
 INNER JOIN Theater b
 ON b.thSeq = d.Theater_thSeq
--- WHERE thName ="CGV 강남"
+WHERE a.dSeq = 3
 ;
 
 -- 좌석선택
