@@ -1,11 +1,5 @@
 USE coca;
 
--- 로그인
-SELECT*
-FROM coca.infrMember 
-WHERE ifMmId="kik7511" and ifMmPassWord="peter7511@"
-;
-
 -- 공통코드 목록
 select
 	a.ccSeq	as seq
@@ -14,34 +8,99 @@ select
     ,a.ccUseNy as USENY
     ,a.ORDER 
 from CC a
--- left join CC on CC.ccgSeq = CCG.ccgSeq
 inner join CCG b  
 on b.ccgSeq = a.ccgSeq
--- join infrMemberAddress b on b.ifmmSeq = a.ifmmSeq
+;
+
+-- 로그인
+SELECT
+	a.IfMmId
+    , a.ifMmPassWord
+FROM coca.infrMember a
+WHERE 1=1
+	AND ifMmId="kik7511" and ifMmPassWord="peter7511@"
+;
+
+-- 메인 무비 차트
+SELECT
+	a.mNameKor    
+FROM coca.Movie a
+WHERE 1=1
+	AND a.mSeq = 1
+;
+
+-- 무비 차트
+SELECT	
+	a.mNameKor
+	, a.mOpenDate
+FROM coca.Movie a
+WHERE 1=1
+	AND a.mSeq = 1
 ;
 
 -- 영화상세정보 목록
-SELECT*
-FROM coca.Movie
-WHERE Movie.mNameKor LIKE "%%" OR Movie.mNameEn LIKE ""
+SELECT 
+	a.mSeq
+    , a.mNameKor
+    , a.mNameEn    
+    , a.mAgeLimit
+    , a.mRunningTime
+    , a.mCountry
+    , a.mOpenDate
+    , a.mExplantion
+FROM coca.Movie a   
+WHERE 1=1
+	AND mSeq = 2;
+   
+-- 영화 상세정보_ 배우    
+SELECT
+	a.mSeq
+    ,a.mNameKor    
+    ,c.sfDiv
+    ,c.sfName
+FROM coca.Movie a
+INNER JOIN coca.searchStaff b
+on b.Movie_mSeq = a.mSeq
+INNER JOIN coca.staff c
+on c.sfSeq = b.staff_sfSeq
+WHERE 1=1
+	AND mSeq = 2
+;
+
+-- 영화 상세정보_장르
+SELECT
+	a.mSeq
+    ,a.mNameKor
+    ,d.gnDiv
+FROM coca.Movie a
+INNER JOIN coca.genre d
+on d.Movie_mSeq = a.mSeq
+WHERE 1=1
+	AND mSeq = 2
+;
+
+-- 구매
+
+-- 영화 목록
+SELECT
+	a.mSeq
+    , a.mNameKor
+    , a.mAgeLimit
+FROM coca.Movie a
 ;
 
 -- 극장 목록
 SELECT
-	thSeq
-    ,thName
-    ,y1.ccCodeName as location
-    ,thOpenDate
-    ,y2.ccCodeName as situation
-FROM Theater x
-inner join CC y1 
-on x.thLocation = y1.ccSeq
-inner join CC y2 
-on x.thSituation = y2.ccSeq
-Where x.thName Like "" or y1.ccCodeName Like "서울"
+	a.thSeq
+    ,a.thLocation
+    ,a.thName
+FROM Theater a
+Where 1=1
+	And a.thLocation = 30
+    And a.thName = "CGV 강남"
 ;
 
--- 스크린 목록
+-- 날짜 시간
 SELECT
 	a.scSeq
     , b.thName
@@ -77,8 +136,28 @@ ON e.ccSeq = b.scScreenType
 
 -- 좌석 목록
 
--- 구매 목록
 
+
+-- 구매 목록
+SELECT
+	a.seq
+	, b.ifMmName
+    , b.ifMmId
+    , e.ccCodeName
+    , b.ifMmPhone
+    , a.price
+    , d.ccCodeName
+FROM coca.purchase a
+INNER JOIN coca.infrMember b
+ON a.infrMember_ifMmSeq = b.ifMmSeq
+INNER JOIN coca.date c
+ON a.date_dSeq = c.dSeq 
+INNER JOIN coca.CC d
+ON a.payment=d.ccSeq
+INNER JOIN coca.CC e
+ON b.ifMmTel=e.ccSeq
+;
+ 
 -- 회원가입 목록
 SELECT*FROM coca.infrMember WHERE ifMmId="" OR ifMmNickname="";
 select 
