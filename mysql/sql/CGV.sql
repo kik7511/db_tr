@@ -83,16 +83,29 @@ SELECT
     , a.mNameKor
     , a.mAgeLimit
 FROM coca.Movie a
+INNER JOIN date b
+	ON a.mSeq=b.Movie_mSeq
+INNER JOIN screen c
+	ON c.scSeq=b.screen_scSeq
+INNER JOIN Theater d
+	ON d.thSeq=c.Theater_thSeq
 Where 1=1
-	and a.mSeq=2
+	and a.mNameKor LIKE "%%"
 ;
 
 -- 극장 목록
 SELECT
 	a.thSeq
+    ,d.mNameKor
     ,a.thLocation
     ,a.thName
 FROM Theater a
+INNER JOIN screen b
+	ON a.thSeq=b.Theater_thSeq
+INNER JOIN date c
+	ON b.scSeq=c.screen_scSeq
+INNER JOIN Movie d
+	ON c.Movie_mSeq=d.mSeq
 Where 1=1
 	And a.thLocation = 30
    
@@ -118,7 +131,7 @@ INNER JOIN Theater b
 WHERE 1=1 
 	AND c.mNameKor = "미니언즈2"
     AND b.thLocation = 30
-	AND b.thName like "%%"
+	AND b.thName like "%강남%"
 	AND d.scNumber = 2
     AND a.dDateTime = '2022-08-01 09:30:00'    
 ;
@@ -143,7 +156,8 @@ INNER JOIN screen d
 	on c.screen_scSeq = d.scSeq
 INNER JOIN Theater e
 	on d.Theater_thSeq = e.thSeq
-WHERE e.thName LIKE "%"
+WHERE 1=1
+	AND e.thName LIKE "%"
 	AND d.scNumber = 1
 ;
 
