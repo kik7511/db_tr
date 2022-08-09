@@ -25,6 +25,7 @@ WHERE 1=1
 SELECT
 	a.mNameKor    
 FROM coca.Movie a
+LIMIT 5
 ;
 
 -- 무비 차트
@@ -78,7 +79,7 @@ WHERE 1=1
 -- 구매
 
 -- 영화 목록
-SELECT
+SELECT DISTINCT
 	a.mSeq
     , a.mNameKor
     , a.mAgeLimit
