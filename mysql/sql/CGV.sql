@@ -45,9 +45,16 @@ SELECT
     , a.mCountry
     , a.mOpenDate
     , a.mExplantion
-FROM coca.Movie a   
-WHERE 1=1
-	AND mSeq = 2;
+FROM coca.Movie a
+INNER JOIN coca.searchStaff b
+on b.Movie_mSeq = a.mSeq
+INNER JOIN coca.staff c
+on c.sfSeq = b.staff_sfSeq
+INNER JOIN coca.genre d
+on d.Movie_mSeq = a.mSeq
+group by mSeq 
+HAVING mNameKor Like "%한%" 
+;
    
 -- 영화 상세정보_ 배우    
 SELECT
@@ -60,20 +67,26 @@ INNER JOIN coca.searchStaff b
 on b.Movie_mSeq = a.mSeq
 INNER JOIN coca.staff c
 on c.sfSeq = b.staff_sfSeq
-WHERE 1=1
-	AND mSeq = 2
+INNER JOIN coca.genre d
+on d.Movie_mSeq = a.mSeq
+group by sfname
+having a.mNameKor Like "%한%" 
 ;
 
 -- 영화 상세정보_장르
-SELECT
+SELECT DISTINCT
 	a.mSeq
     ,a.mNameKor
     ,d.gnDiv
 FROM coca.Movie a
+INNER JOIN coca.searchStaff b
+on b.Movie_mSeq = a.mSeq
+INNER JOIN coca.staff c
+on c.sfSeq = b.staff_sfSeq
 INNER JOIN coca.genre d
 on d.Movie_mSeq = a.mSeq
 WHERE 1=1
-	AND mSeq = 2
+	AND mNameKor Like "%한%" 
 ;
 
 -- 구매
@@ -130,7 +143,7 @@ INNER JOIN screen d
 INNER JOIN Theater b
 	ON b.thSeq = d.Theater_thSeq
 WHERE 1=1 
-	AND c.mNameKor = "미니언즈2"
+	AND c.mNameKor = "미니언즈2"    
     AND b.thLocation = 30
 	AND b.thName like "%강남%"
 	AND d.scNumber = 2
@@ -189,11 +202,38 @@ INNER JOIN Theater f
 INNER JOIN seat g
 	on g.purchase_seq = a.seq
 WHERE 1=1
-	and ifMmId = "kik7511"
+	and ifMmId = "kik7511"   
 ;
  
--- 회원 관리 
-
+-- 구매 내역 확인 
+SELECT
+	a.seq
+    ,b.ifMmName
+    ,b.ifMmId
+    ,d.mNamekor
+    ,f.thName
+    ,c.dDateTime
+    ,e.scNumber    
+    ,g.stkind
+    ,a.payment
+    ,count(b.ifMmName) as ticketQuantity
+    ,a.price as totalPrice
+FROM coca.purchase a
+INNER JOIN coca.infrMember b
+	ON a.infrMember_ifMmSeq = b.ifMmSeq
+INNER JOIN coca.date c
+	ON a.date_dSeq = c.dSeq
+INNER JOIN coca.Movie d
+	ON c.Movie_mSeq = d.mSeq
+INNER JOIN screen e
+	on c.screen_scSeq = e.scSeq
+INNER JOIN Theater f
+	on e.Theater_thSeq = f.thSeq
+INNER JOIN seat g
+	on g.purchase_seq = a.seq
+group by b.ifMmName
+HAVING b.ifMmId = "kik7511"
+;
 
 
 
