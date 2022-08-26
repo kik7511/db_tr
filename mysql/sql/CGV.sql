@@ -53,7 +53,7 @@ on c.sfSeq = b.staff_sfSeq
 INNER JOIN coca.genre d
 on d.Movie_mSeq = a.mSeq
 group by mSeq 
-HAVING mNameKor Like "%한%" 
+HAVING mNameKor Like "%미%" 
 ;
    
 -- 영화 상세정보_ 배우    
