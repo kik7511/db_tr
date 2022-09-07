@@ -9,7 +9,7 @@ select
     ,a.ORDER 
 from CC a
 inner join CCG b  
-on b.ccgSeq = a.ccgSeq
+on b.ccgSeq = a.ccgSeq	
 ;
 
 -- 로그인
