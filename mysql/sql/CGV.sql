@@ -6,7 +6,7 @@ select
     ,b.codeGroup
     ,a.ccCodeName as codeName   
     ,a.ccUseNy as USENY
-    ,a.ORDER 
+    ,a.ORDER CC
 from CC a
 inner join CCG b  
 on b.ccgSeq = a.ccgSeq	
@@ -15,7 +15,7 @@ on b.ccgSeq = a.ccgSeq
 -- 로그인
 SELECT
 	a.IfMmId
-    , a.ifMmPassWord
+    , a.ifMmPassWordinfraMember
 FROM coca.infrMember a
 WHERE 1=1
 	AND ifMmId="kik7511" and ifMmPassWord="peter7511@"
