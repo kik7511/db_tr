@@ -1,241 +1,44 @@
-USE coca;
-
--- 공통코드 목록
-select
-	a.ccSeq	as seq
-    ,b.codeGroup
-    ,a.ccCodeName as codeName   
-    ,a.ccUseNy as USENY
-    ,a.ORDER CC
-from CC a
-inner join CCG b  
-on b.ccgSeq = a.ccgSeq	
-;
-
--- 로그인
-SELECT
-	a.IfMmId
-    , a.ifMmPassWordinfraMember
-FROM coca.infrMember a
-WHERE 1=1
-	AND ifMmId="kik7511" and ifMmPassWord="peter7511@"
-;
-
--- 메인 무비 차트
-SELECT
-	a.mNameKor    
-FROM coca.Movie a
-LIMIT 5
-;
-
--- 무비 차트
-SELECT	
-	a.mNameKor
-	, a.mOpenDate
-FROM coca.Movie a
-;
-
--- 영화상세정보 목록
-SELECT 
-	a.mSeq
-    , a.mNameKor
-    , a.mNameEn    
-    , a.mAgeLimit
-    , a.mRunningTime
-    , a.mCountry
-    , a.mOpenDate
-    , a.mExplantion
-FROM coca.Movie a
-INNER JOIN coca.searchStaff b
-on b.Movie_mSeq = a.mSeq
-INNER JOIN coca.staff c
-on c.sfSeq = b.staff_sfSeq
-INNER JOIN coca.genre d
-on d.Movie_mSeq = a.mSeq
-group by mSeq 
-HAVING mNameKor Like "%미%" 
-;
-   
--- 영화 상세정보_ 배우    
-SELECT
-	a.mSeq
-    ,a.mNameKor    
-    ,c.sfDiv
-    ,c.sfName
-FROM coca.Movie a
-INNER JOIN coca.searchStaff b
-on b.Movie_mSeq = a.mSeq
-INNER JOIN coca.staff c
-on c.sfSeq = b.staff_sfSeq
-INNER JOIN coca.genre d
-on d.Movie_mSeq = a.mSeq
-group by sfname
-having a.mNameKor Like "%한%" 
-;
-
--- 영화 상세정보_장르
-SELECT DISTINCT
-	a.mSeq
-    ,a.mNameKor
-    ,d.gnDiv
-FROM coca.Movie a
-INNER JOIN coca.searchStaff b
-on b.Movie_mSeq = a.mSeq
-INNER JOIN coca.staff c
-on c.sfSeq = b.staff_sfSeq
-INNER JOIN coca.genre d
-on d.Movie_mSeq = a.mSeq
-WHERE 1=1
-	AND mNameKor Like "%한%" 
-;
-
--- 구매
-
--- 영화 목록
-SELECT DISTINCT
-	a.mSeq
-    , a.mNameKor
-    , a.mAgeLimit
-FROM coca.Movie a
-INNER JOIN date b
-	ON a.mSeq=b.Movie_mSeq
-INNER JOIN screen c
-	ON c.scSeq=b.screen_scSeq
-INNER JOIN Theater d
-	ON d.thSeq=c.Theater_thSeq
-Where 1=1
-	and a.mNameKor LIKE "%%"
-;
-
--- 극장 목록
-SELECT
-	a.thSeq
-    ,d.mNameKor
-    ,a.thLocation
-    ,a.thName
-FROM Theater a
-INNER JOIN screen b
-	ON a.thSeq=b.Theater_thSeq
-INNER JOIN date c
-	ON b.scSeq=c.screen_scSeq
-INNER JOIN Movie d
-	ON c.Movie_mSeq=d.mSeq
-Where 1=1
-	And a.thLocation = 30
-   
-;
-
--- 날짜 시간 
-SELECT
- 	a.dSeq as seq
-    ,c.mNameKor 
-    ,b.thLocation
-    ,b.thName 
-    ,d.scNumber
-    ,a.dDateTime      
-    ,d.scScreenType    
-    ,d.scTotalSeat    
-FROM date a
-INNER JOIN Movie c
-	ON a.Movie_mSeq=c.mSeq
-INNER JOIN screen d
-	ON a.screen_scSeq=d.scSeq
-INNER JOIN Theater b
-	ON b.thSeq = d.Theater_thSeq
-WHERE 1=1 
-	AND c.mNameKor = "미니언즈2"    
-    AND b.thLocation = 30
-	AND b.thName like "%강남%"
-	AND d.scNumber = 2
-    AND a.dDateTime = '2022-08-01 09:30:00'    
-;
-
--- 좌석선택
-SELECT
-	a.stSeq
-    ,e.thName
-    ,d.scNumber
-    ,d.scRow
-    ,d.scCol
-    ,a.stY_alphabet
-    ,a.stX_num
-    ,a.stkind
-    ,a.stPrice
-FROM seat a
-INNER JOIN purchase b
-	on a.purchase_seq = b.seq
-INNER JOIN date c
-	on b.date_dSeq = c.dSeq
-INNER JOIN screen d
-	on c.screen_scSeq = d.scSeq
-INNER JOIN Theater e
-	on d.Theater_thSeq = e.thSeq
-WHERE 1=1
-	AND e.thName LIKE "%"
-	AND d.scNumber = 1
-;
-
--- 구매 목록
-SELECT
-	a.seq
-    ,b.ifMmName
-    ,b.ifMmId
-    ,d.mNamekor
-    ,f.thName
-    ,c.dDateTime
-    ,e.scNumber    
-    ,g.stkind
-    ,g.stY_alphabet
-    ,g.stX_num    
-    ,g.stPrice    
-FROM coca.purchase a
-INNER JOIN coca.infrMember b
-	ON a.infrMember_ifMmSeq = b.ifMmSeq
-INNER JOIN coca.date c
-	ON a.date_dSeq = c.dSeq
-INNER JOIN coca.Movie d
-	ON c.Movie_mSeq = d.mSeq
-INNER JOIN screen e
-	on c.screen_scSeq = e.scSeq
-INNER JOIN Theater f
-	on e.Theater_thSeq = f.thSeq
-INNER JOIN seat g
-	on g.purchase_seq = a.seq
-WHERE 1=1
-	and ifMmId = "kik7511"   
-;
+SELECT * FROM coca.Movie;
  
--- 구매 내역 확인 
+SHOW index FROM coca.Movie;
+
+CREATE INDEX abc on Movie (mNameKor, mAgeLimit, src);
+
+ALTER TABLE Movie DROP INDEX abc;
+
+create view v_Movie
+as
 SELECT
-	a.seq
-    ,b.ifMmName
-    ,b.ifMmId
-    ,d.mNamekor
-    ,f.thName
-    ,c.dDateTime
-    ,e.scNumber    
-    ,g.stkind
-    ,a.payment
-    ,count(b.ifMmName) as ticketQuantity
-    ,a.price as totalPrice
-FROM coca.purchase a
-INNER JOIN coca.infrMember b
-	ON a.infrMember_ifMmSeq = b.ifMmSeq
-INNER JOIN coca.date c
-	ON a.date_dSeq = c.dSeq
-INNER JOIN coca.Movie d
-	ON c.Movie_mSeq = d.mSeq
-INNER JOIN screen e
-	on c.screen_scSeq = e.scSeq
-INNER JOIN Theater f
-	on e.Theater_thSeq = f.thSeq
-INNER JOIN seat g
-	on g.purchase_seq = a.seq
-group by b.ifMmName
-HAVING b.ifMmId = "kik7511"
+	d.thLocation
+	,a.mNameKor
+	,a.mSeq
+	,a.mAgeLimit
+	,a.src
+	FROM Movie a
+	INNER JOIN date b ON b.Movie_mSeq = a.mSeq 
+	INNER JOIN screen c ON c.scSeq = b.screen_scSeq
+	INNER JOIN Theater d ON d.thSeq = c.Theater_thSeq;
+
+DELIMITER $$
+CREATE FUNCTION getInfrMemberName (
+seq bigint
+) 
+RETURNS varchar(100)
+BEGIN
+	
+    declare mNameKor varchar(100);
+
+	select
+		ifmmName into mNameKor
+	from
+		Movie
+	where 1=1
+		and mSeq = mSeq
+	;
+
+	RETURN rtName;
+END$$
+DELIMITER ;
+
+SET GLOBAL log_bin_trust_function_creators = 1
 ;
-
-
-
-
-
