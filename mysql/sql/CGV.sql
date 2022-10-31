@@ -19,26 +19,15 @@ SELECT
 	INNER JOIN screen c ON c.scSeq = b.screen_scSeq
 	INNER JOIN Theater d ON d.thSeq = c.Theater_thSeq;
 
-DELIMITER $$
-CREATE FUNCTION getInfrMemberName (
-seq bigint
-) 
-RETURNS varchar(100)
-BEGIN
-	
-    declare mNameKor varchar(100);
-
-	select
-		ifmmName into mNameKor
-	from
-		Movie
-	where 1=1
-		and mSeq = mSeq
-	;
-
-	RETURN rtName;
-END$$
+DELIMITER $$ 
+DROP FUNCTION IF EXISTS FUNCTION_TEST$$ 
+CREATE FUNCTION FUNCTION_TEST() 
+	RETURNS VARCHAR(20) 
+BEGIN 
+	DECLARE Result VARCHAR(10); 
+	SET Result = 'OK'; 
+	RETURN Result; 
+END $$ 
 DELIMITER ;
 
-SET GLOBAL log_bin_trust_function_creators = 1
-;
+SELECT FUNCTION_TEST();
