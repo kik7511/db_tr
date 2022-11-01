@@ -31,3 +31,8 @@ END $$
 DELIMITER ;
 
 SELECT FUNCTION_TEST();
+
+
+SELECT * FROM coca.infrMember;
+alter table card drop foreign key fk_card_infraMember;
+select * from information_schema.table_constraints where table_name = 'accountBook';
